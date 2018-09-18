@@ -34,12 +34,13 @@ th:href="@{/css/bootstrap.min.css}"  />
 	<td th:text="${p.designation}"></td>
 	<td th:text="${p.prix}"></td>
 	<td th:text="${p.quantite}"></td>
+	<td><a th:text="Delete" th:href="@{delete(id=${p.id},page=${pageCourante},size=${size},motCle=${motCle})}"> </a></td>
 
 	</tr>
 	
 	</tbody>
 </table>
-</div>
+</div> 
 <div class="container">
 <ul class="nav nav-pills">
 <li th:class="${pageCourante}==${status.index}?'active':''" th:each="pa,status:${pages}" >

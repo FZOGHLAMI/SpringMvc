@@ -36,4 +36,12 @@ public class ProduitController {
     	
 		return "produits";//retourne vue produits.html
 	}
+     
+	@RequestMapping(value="/delete")
+	public String delete(Long id, String motCle, int page, int size) {
+		
+		produitRepository.deleteById(id);
+		return "redirect:/index?page="+page+"&size="+size+"&motCle="+motCle;//retourne vue produits.html
+	}
+
 }
