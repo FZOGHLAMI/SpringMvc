@@ -34,7 +34,7 @@ th:href="@{/css/bootstrap.min.css}"  />
 	<td th:text="${p.designation}"></td>
 	<td th:text="${p.prix}"></td>
 	<td th:text="${p.quantite}"></td>
-	<td><a th:text="Delete" th:href="@{delete(id=${p.id},page=${pageCourante},size=${size},motCle=${motCle})}"> </a></td>
+	<td><a onclick="return confirm('Etes vous sure?')" th:text="Delete" th:href="@{delete(id=${p.id},page=${pageCourante},size=${size},motCle=${motCle})}"> </a></td>
 
 	</tr>
 	
