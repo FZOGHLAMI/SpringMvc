@@ -12,19 +12,21 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	   @Override
-	    protected void configure(HttpSecurity httpSecurity) throws Exception {
-	        httpSecurity.authorizeRequests().antMatchers("/").permitAll();
-	}
-	/*
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+//	   @Override
+//	    protected void configure(HttpSecurity httpSecurity) throws Exception {
+//	        httpSecurity.authorizeRequests().antMatchers("/").permitAll();
+//	}
+	
+	//@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
+	
 	@Autowired
 	private DataSource dataSource;
 	
@@ -34,6 +36,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Value("${spring.queries.roles-query}")
 	private String rolesQuery;
 
+	
+	
+	//Charger les user et mot de passe et role
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth)
 			throws Exception {
@@ -41,30 +46,31 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			jdbcAuthentication()
 				.usersByUsernameQuery(usersQuery)
 				.authoritiesByUsernameQuery(rolesQuery)
-				.dataSource(dataSource)
+				.dataSource(dataSource).rolePrefix("ROLE_")
 				.passwordEncoder(bCryptPasswordEncoder);
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		http.formLogin();
+		http.authorizeRequests().antMatchers("/user/*").hasRole("USER");
+		http.authorizeRequests().antMatchers("/admin/*").hasRole("ADMIN");
+		http.exceptionHandling().accessDeniedPage("/403");
 		
-		http.
-			authorizeRequests()
-				.antMatchers("/").permitAll()
-				.antMatchers("/login").permitAll()
-				.antMatchers("/registration").permitAll()
-				.antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
-				.authenticated().and().csrf().disable().formLogin()
-				.loginPage("/login").failureUrl("/login?error=true")
-				.defaultSuccessUrl("/admin/home")
-				.usernameParameter("email")
-				.passwordParameter("password")
-				.and().logout()
-				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-				.logoutSuccessUrl("/").and().exceptionHandling()
-				.accessDeniedPage("/access-denied");
+//				.antMatchers("/login").permitAll()
+//				.antMatchers("/form","/save","/delete","/edit").permitAll()
+//				.antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
+//				.authenticated().and().csrf().disable().formLogin()
+//				.loginPage("/login").failureUrl("/login?error=true")
+//				.defaultSuccessUrl("/admin/home")
+//				.usernameParameter("email")
+//				.passwordParameter("password")
+//				.and().logout()
+//				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+//				.logoutSuccessUrl("/").and().exceptionHandling()
+//				.accessDeniedPage("/access-denied");
 	}
-	
+	/*
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 	    web
@@ -72,4 +78,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	       .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
 	}
 */
+
 }

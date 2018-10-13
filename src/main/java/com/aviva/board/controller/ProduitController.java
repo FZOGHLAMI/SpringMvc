@@ -21,7 +21,7 @@ public class ProduitController {
 	@Autowired
 	private ProduitRepository produitRepository;
 
-	@RequestMapping(value = "/index")
+	@RequestMapping(value = "/user/index")
 	public String index(Model model, @RequestParam(name = "page", defaultValue = "0") int p,
 			@RequestParam(name = "size", defaultValue = "5") int s,
 			@RequestParam(name = "motCle", defaultValue = "") String mc) {
@@ -40,19 +40,29 @@ public class ProduitController {
 		return "produits";// retourne vue produits.html
 	}
 
-	@RequestMapping(value = "/delete")
+	@RequestMapping(value = "/admin/delete")
 	public String delete(Long id, String motCle, int page, int size) {
 		produitRepository.deleteById(id);
-		return "redirect:/index?page=" + page + "&size=" + size + "&motCle=" + motCle;// retourne vue produits.html
+		return "redirect:/user/index?page=" + page + "&size=" + size + "&motCle=" + motCle;// retourne vue produits.html
 	}
-	@RequestMapping(value = "/form",method=RequestMethod.GET)
-	public String formPoroduit(Model model) {
+	
+	
+	
+	@RequestMapping(value = "/admin/form",method=RequestMethod.GET)
+	public String formProduit(Model model) {
 		model.addAttribute("produit", new Produit());
 		return "formProduit";
 	}
+	
+	@RequestMapping(value = "/admin/edit",method=RequestMethod.GET)
+	public String editProduit(Model model,Long id) {
+		Produit p= produitRepository.getOne(id);
+		model.addAttribute("produit", p);
+		return "formProduit";
+	}
 
-	@RequestMapping(value = "/save",method=RequestMethod.POST)
-	public String savePoroduit(Model model,@Valid Produit produit,BindingResult bindingResult) {
+	@RequestMapping(value = "/admin/save",method=RequestMethod.POST)
+	public String saveProduit(Model model,@Valid Produit produit,BindingResult bindingResult) {
 	
 		if(bindingResult.hasErrors()) {
 			return "formProduit";
@@ -62,4 +72,13 @@ public class ProduitController {
 		return "confirmation";
 	}
 	
+	@RequestMapping(value = "/403")
+	public String accessDenied() {
+		return "403";
+	}
+	
+	@RequestMapping(value="/")
+	public String home() {
+		return "redirect:/user/index";
+	}
 }
