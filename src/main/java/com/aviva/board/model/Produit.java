@@ -16,11 +16,11 @@ public class Produit implements Serializable {
 	@Id @GeneratedValue
 	private Long id;
 	
-	@DecimalMin("100")
+	//@DecimalMin("100")
 	private double prix;
 	
-	@NotNull
-	@Size(min=3, max=15)
+	//@NotNull
+	//@Size(min=3, max=15)
 	private String designation;
 	private int quantite;
 
