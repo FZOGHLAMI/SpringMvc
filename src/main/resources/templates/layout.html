@@ -22,9 +22,10 @@
 			<li><a th:href="@{/admin/form}">   Produits </a></li>
 		<li><a th:href="@{/login?logout}" th:inline="text">   
 		 [[${#httpServletRequest.remoteUser}]] </a></li>
+			<li><a th:href="@{/login?logout}" th:inline="text">   
+		 <button class="btn btn-md btn-danger btn-block" name="registration"
+				type="Submit">Logout</button> </a></li>
 		
-			
-			
 		</ul>
 	</div>
 	</div>

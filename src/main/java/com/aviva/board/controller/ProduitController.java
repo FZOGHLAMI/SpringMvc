@@ -81,4 +81,9 @@ public class ProduitController {
 	public String home() {
 		return "redirect:/user/index";
 	}
+	
+	@RequestMapping(value="/login")
+	public String login() {
+		return "login";
+	}
 }
